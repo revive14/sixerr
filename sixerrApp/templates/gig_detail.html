@@ -1,9 +1,62 @@
 
 {% extends 'base.html' %}
+{% load staticfiles %}
+
 
 {% block title %}Gig #: {{id}} {% endblock %}
 {% block page %}
-  <h1>Gig Detail</h1>
-  <p>Gig id is: {{id}}</p>
-  <p>Hello: {{user.username}}</p>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h3>I will create your website with django and bootstrap</h3>
+          <hr>
+          <img src="{% static 'img/gig.png' %}" class='img-responsive' alt="">
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>About this Gig</h4>
+        </div>
+        <div class="panel-body">
+          <p>I will create your website in just 2 days</p>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>Review</h3>
+        </div>
+        <ul class="list-group">
+          {% for i in '123' %}
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-md-2">
+                  <img src="{% static 'img/avatar.png' %}" height="60" width="60" class="img-responsive img-circle center block" alt="">
+                </div>
+                <div class="col-md-10">
+                  <h5>Iron Man</h5>
+                  <p>Great Job this guy is awesome</p>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <button type="button" class="btn btn-success btn-block">Order Now ($6)</button>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <img src="{% static 'img/avatar.png' %}" class="img-circle center-block" height="100" width="100"alt="">
+          <h4 class='text-center'>Iron Man</h4>
+          <hr>
+          <p>I have 3 years of experience in python django and react</p>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
