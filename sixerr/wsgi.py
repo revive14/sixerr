@@ -14,3 +14,9 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sixerr.settings")
 
 application = get_wsgi_application()
+
+
+#Use white noise to serve static file on heroku
+from whitenoise.django import DjangoWhiteNoise
+
+application = DjangoWhiteNoise(application)
