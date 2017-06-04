@@ -18,14 +18,16 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from sixerrApp import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
-    url(r'gigs/(?P<id>[0-9]+)/$', views.gig_detail, name='gig_detail'),
+    url(r'^',include('sixerrApp.urls')),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
-    # url(r'^auth/', include('auth_views.urls', namespace='auth')),
     #login
     url(r'^login/$', auth_views.login, name='login'),
     #logout
     url(r'^logout/$', auth_views.logout,{'next_page': '/'}, name='logout'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

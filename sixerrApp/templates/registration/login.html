@@ -2,12 +2,16 @@
 {% block title %}Sign In {% endblock %}
 
 {% block page %}
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+{% if user and not user.is_anonymous %}
+<h1><a href="{% url 'logout' %}">LogOut</a></h1>
+{% else %}
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
 
-<a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+  <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+{% endif %}
 {% endblock %}

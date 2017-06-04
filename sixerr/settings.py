@@ -133,6 +133,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 SOCIAL_AUTH_FACEBOOK_KEY = '302047920238920'  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = '9e2f5d9118798607755bd9b82d25ae93'  # App Secret
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+'fields': 'id,name,email',
+}
 AUTHENTICATION_BACKENDS = (
     # FACEBOOK AUTHENTICATIN
     'social_core.backends.facebook.FacebookOAuth2',
@@ -140,8 +144,26 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'sixerrApp.social_auth_pipeline.save_avatar',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
+
 
 # replace database settings to use postgresql on Heroku
 import dj_database_url
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
+
+#SETUP upload directory for Gig model
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
