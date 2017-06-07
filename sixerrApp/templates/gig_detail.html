@@ -9,7 +9,7 @@
     <div class="col-md-8">
       <div class="panel panel-default">
         <div class="panel-body">
-          <h3>{{ gig.title}}</h3>
+          <h3>{{ gig.title}}{% if gig.user == request.user %} <a href="{% url 'edit_gig' gig.id %}" class="btn btn-primary pull-right">Edit</a>{%endif %}</h3>
           <hr>
           <img src="/media/{{gig.photo}}" class='img-responsive' alt="">
         </div>
@@ -46,13 +46,39 @@
     <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-body">
-          <button type="button" class="btn btn-success btn-block">Order Now (${{gig.price}})</button>
+          {% if user and not user.is_anonymous %}
+            <form method="POST" action="/checkout/">
+              {% csrf_token %}
+              <div id="payment-form"></div>
+              <input name="gig_id" value="{{ gig.id }}" hidden>
+              <button type="submit" class="btn btn-success btn-block">Order Now (${{ gig.price }})</button>
+            </form>
+
+            <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+            <script>
+              $(document).ready(function() {
+                braintree.setup("{{ client_token }}", "dropin", {
+                  container: "payment-form",
+                  paypal: {
+                    singleUse: true,
+                    amount: "{{ gig.price }}",
+                    currency: 'USD'
+                  }
+                });
+              });
+
+            </script>
+          {% else %}
+            You need to login to order this gig!
+          {% endif %}
+
         </div>
       </div>
       <div class="panel panel-default">
         <div class="panel-body">
-          <img src="{% if gig.user.profile %} {{gig.user.profile.avatar}} {% else %} {% static 'img/avatar.png' %} {% endif %}"" class="img-circle center-block" height="100" width="100"alt="">
-          <h4 class='text-center'>{{gig.user.username}}</h4>
+          <img src="{% if gig.user.profile %} {{gig.user.profile.avatar}} {% else %} {% static 'img/avatar.png' %} {% endif %}" class='img-circle center-block' height="100" width="100"alt="">
+          <a href="{% url 'profile' gig.user.username %}"><h4 class='text-center'>{{gig.user.username}}</h4></a>
+
           <hr>
           <p>{{gig.user.profile.about}}</p>
         </div>
